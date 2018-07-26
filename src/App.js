@@ -9,8 +9,13 @@ class App extends Component {
     this.state = {
       session: 25,
       break: 5,
-      time: {},
-      seconds: 25
+      timeFormat: {
+        h: 0,
+        m: 25,
+        s: 0,
+        total: 25 * 60 * 1000
+      },
+      time: 25 * 60 * 1000
     }
 
     this.timer = 0
@@ -19,7 +24,8 @@ class App extends Component {
   setSession = t => {
     this.setState({
       session: t,
-      seconds: t * 60
+      time: t * 60 * 1000,
+      timeFormat: this.formatTime(t * 60 * 1000)
     })
   }
 
@@ -29,49 +35,50 @@ class App extends Component {
     })
   }
 
-  secondsToTime = secs => {
-    let hours = Math.floor(secs / (60 * 60))
-
-    let divisor_for_minutes = secs % (60 * 60)
-    let minutes = Math.floor(divisor_for_minutes / 60)
-
-    let divisor_for_seconds = divisor_for_minutes % 60
-    let seconds = Math.ceil(divisor_for_seconds)
+  formatTime = ms => {
+    let t = ms
+    let seconds = Math.floor(t / 1000 % 60)
+    let minutes = Math.floor(t / 1000 / 60 % 60)
+    let hours = Math.floor(t / (1000 * 60 * 60) % 24)
 
     let time = {
       h: hours,
       m: minutes,
-      s: seconds
+      s: seconds,
+      total: t
     }
+
     return time
   }
 
   tickTock = () => {
-    let seconds = this.state.seconds - 1
+    let time = this.state.time - 1000
     this.setState({
-      time: this.secondsToTime(seconds),
-      seconds: seconds
+      timeFormat: this.formatTime(time),
+      time: time
     })
 
-    if (seconds === 0) {
+    if (time === 0) {
       clearInterval(this.timer)
     }
   }
 
   startTimer = () => {
-    if (this.timer === 0) {
-      this.timer = setInterval(this.tickTock, 1000)
-    }
+    this.timer = setInterval(this.tickTock, 1000)
+  }
+
+  stopTimer = () => {
+    clearInterval(this.timer)
   }
 
   componentDidMount () {
-    let timeLeft = this.secondsToTime(this.state.session * 60)
+    let timeLeft = this.state.session * 60 * 1000
     this.setState({ time: timeLeft })
   }
 
   render () {
-    const minutes = ('0' + this.state.time.m).slice(-2)
-    const seconds = ('0' + this.state.time.s).slice(-2)
+    const minutes = ('0' + this.state.timeFormat.m).slice(-2)
+    const seconds = ('0' + this.state.timeFormat.s).slice(-2)
     return (
       <div className='App'>
         <SetTimer
@@ -86,6 +93,7 @@ class App extends Component {
         />
         <div>
           <button onClick={this.startTimer}>Start</button>
+          <button onClick={this.stopTimer}>Stop</button>
           <p>{minutes} : {seconds}</p>
         </div>
       </div>
