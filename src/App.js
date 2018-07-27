@@ -2,31 +2,32 @@ import React, { Component } from 'react'
 import './App.css'
 import Timer from './Timer.js'
 import SetTimer from './SetTimer.js'
+import format from './format.js'
+const sesh = 0.2
+const br = 0.5
 
 class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      session: 25,
-      break: 5,
-      timeFormat: {
-        h: 0,
-        m: 25,
-        s: 0,
-        total: 25 * 60 * 1000
-      },
-      time: 25 * 60 * 1000
+      session: sesh,
+      break: br,
+      sessionFlag: true,
+      running: false,
+      paused: false,
+      time: sesh * 60 * 1000
     }
 
     this.timer = 0
   }
 
   setSession = t => {
-    this.setState({
-      session: t,
-      time: t * 60 * 1000,
-      timeFormat: this.formatTime(t * 60 * 1000)
-    })
+    if (!this.state.running) {
+      this.setState({
+        session: t,
+        time: t * 60 * 1000
+      })
+    }
   }
 
   setBreak = t => {
@@ -35,67 +36,101 @@ class App extends Component {
     })
   }
 
-  formatTime = ms => {
-    let t = ms
-    let seconds = Math.floor(t / 1000 % 60)
-    let minutes = Math.floor(t / 1000 / 60 % 60)
-    let hours = Math.floor(t / (1000 * 60 * 60) % 24)
-
-    let time = {
-      h: hours,
-      m: minutes,
-      s: seconds,
-      total: t
-    }
-
-    return time
-  }
-
   tickTock = () => {
-    let time = this.state.time - 1000
-    this.setState({
-      timeFormat: this.formatTime(time),
-      time: time
-    })
+    let time = this.state.time
 
     if (time === 0) {
-      clearInterval(this.timer)
+      this.alarm()
+      if (this.state.sessionFlag) {
+        this.setState({
+          time: this.state.break * 60 * 1000
+        })
+      } else {
+        this.setState({
+          time: this.state.session * 60 * 1000
+        })
+      }
+      this.setState({
+        sessionFlag: !this.state.sessionFlag
+      })
     }
+    time = this.state.time - 1000
+    this.setState({
+      time: time
+    })
+  }
+
+  alarm = () => {
+    this.beep.play()
   }
 
   startTimer = () => {
+    this.setState({
+      running: true,
+      pause: false,
+      sessionFlag: true
+    })
     this.timer = setInterval(this.tickTock, 1000)
   }
 
   stopTimer = () => {
+    this.setState({
+      running: false,
+      pause: true
+    })
     clearInterval(this.timer)
   }
 
-  componentDidMount () {
-    let timeLeft = this.state.session * 60 * 1000
-    this.setState({ time: timeLeft })
+  resetTimer = () => {
+    clearInterval(this.timer)
+
+    this.setSession(25)
+    this.setBreak(5)
+    this.beep.pause()
+    this.beep.currentTime = 0
+    this.setState({
+      running: false,
+      pause: false
+    })
   }
 
+  componentDidMount () {}
+
   render () {
-    const minutes = ('0' + this.state.timeFormat.m).slice(-2)
-    const seconds = ('0' + this.state.timeFormat.s).slice(-2)
+    const timeFormat = format(this.state.time)
+    const minutes = ('0' + timeFormat.m).slice(-2)
+    const seconds = ('0' + timeFormat.s).slice(-2)
     return (
       <div className='App'>
         <SetTimer
           time={this.state.session}
-          setSession={this.setSession}
+          setTime={this.setSession}
           label='session'
         />
         <SetTimer
           time={this.state.break}
-          setBreak={this.setBreak}
+          setTime={this.setBreak}
           label='break'
         />
         <div>
           <button onClick={this.startTimer}>Start</button>
           <button onClick={this.stopTimer}>Stop</button>
+          <button onClick={this.resetTimer}>Reset</button>
           <p>{minutes} : {seconds}</p>
+          <p>
+            {this.state.sessionFlag && this.state.running
+              ? 'work bitch'
+              : 'chill'}
+          </p>
         </div>
+        <audio
+          id='beep'
+          preload='auto'
+          src='https://goo.gl/65cBl1'
+          ref={audio => {
+            this.beep = audio
+          }}
+        />
       </div>
     )
   }
