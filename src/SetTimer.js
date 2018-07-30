@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class SetTimer extends Component {
   increment = () => {
     let t = this.props.time
-    if (this.props.time > 1 && this.props.time < 60) {
+    if (this.props.time >= 1 && this.props.time < 60) {
       t = t + 1
     }
     this.props.setTime(t)
@@ -11,7 +11,7 @@ class SetTimer extends Component {
 
   decrement = () => {
     let t = this.props.time
-    if (this.props.time > 1 && this.props.time < 60) {
+    if (this.props.time > 1 && this.props.time <= 60) {
       t = t - 1
     }
     this.props.setTime(t)
