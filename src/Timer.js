@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import SetTimer from './SetTimer.js'
 import format from './format.js'
 
 class Timer extends Component {
@@ -37,8 +36,7 @@ class Timer extends Component {
   startTimer = () => {
     this.props.setRunning(true)
     this.setState({
-      pause: false,
-      sessionFlag: true
+      pause: false
     })
     this.timer = setInterval(this.tickTock, 1000)
   }
@@ -53,15 +51,16 @@ class Timer extends Component {
 
   resetTimer = () => {
     clearInterval(this.timer)
-
-    this.props.setSession(25)
-    this.props.setBreak(5)
+    this.props.setRunning(false)
     this.beep.pause()
     this.beep.currentTime = 0
+    this.props.setSession(25)
+    this.props.setBreak(5)
+
     this.setState({
-      running: false,
       pause: false
     })
+    this.props.updateTime(25 * 60 * 1000)
   }
 
   render () {
@@ -75,7 +74,7 @@ class Timer extends Component {
         <button onClick={this.resetTimer}>Reset</button>
         <h1>{minutes} : {seconds}</h1>
         <p>
-          {this.state.sessionFlag && this.state.running
+          {this.state.sessionFlag && this.props.app.running
             ? 'work bitch'
             : 'chill'}
         </p>

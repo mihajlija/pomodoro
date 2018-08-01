@@ -3,8 +3,8 @@ import './App.css'
 import Timer from './Timer.js'
 import SetTimer from './SetTimer.js'
 import format from './format.js'
-const sesh = 5
-const br = 5
+const sesh = 10
+const br = 20
 
 class App extends Component {
   constructor (props) {
@@ -18,7 +18,9 @@ class App extends Component {
   }
 
   setSession = t => {
+    console.log('in session ', this.state.running)
     if (!this.state.running) {
+      console.log(t)
       this.setState({
         session: t,
         time: t * 60 * 1000
@@ -39,9 +41,12 @@ class App extends Component {
   }
 
   setRunning = b => {
-    this.setState({
-      running: b
-    })
+    this.setState(
+      {
+        running: b
+      },
+      () => console.log('flag ', this.state.running)
+    )
   }
 
   componentDidMount () {}
