@@ -21,7 +21,6 @@ class App extends Component {
 
   setSession = t => {
     if (!this.state.running) {
-      console.log(t)
       this.setState({
         session: t,
         time: minutesToMs(t)

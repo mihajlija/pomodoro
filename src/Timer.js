@@ -60,6 +60,7 @@ class Timer extends Component {
 
   resetTimer = () => {
     clearInterval(this.timer)
+    this.setState({ sessionFlag: true })
     this.pauseAlarm()
     this.props.reset()
   }
