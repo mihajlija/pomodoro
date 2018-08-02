@@ -42,8 +42,15 @@ button {
     background: none;
     color: white;
     margin: 0.5em;
+    cursor: pointer;
+
     }
 
 button:focus {
     outline: none;
     }    
+
+/* button:hover {
+   color: #201d2d;
+   border-color: #201d2d; 
+        }  */
