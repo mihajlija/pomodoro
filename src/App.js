@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+import './buttons.css'
 import './App.css'
 import Timer from './Timer.js'
 import SetTimer from './SetTimer.js'
-import format from './format.js'
+import { minutesToMs } from './format.js'
 const sesh = 10
 const br = 20
 
@@ -13,17 +14,17 @@ class App extends Component {
       session: sesh,
       break: br,
       running: false,
-      time: sesh * 60 * 1000
+      paused: false,
+      time: minutesToMs(sesh)
     }
   }
 
   setSession = t => {
-    console.log('in session ', this.state.running)
     if (!this.state.running) {
       console.log(t)
       this.setState({
         session: t,
-        time: t * 60 * 1000
+        time: minutesToMs(t)
       })
     }
   }
@@ -41,39 +42,47 @@ class App extends Component {
   }
 
   setRunning = b => {
-    this.setState(
-      {
-        running: b
-      },
-      () => console.log('flag ', this.state.running)
-    )
+    this.setState({
+      running: b,
+      paused: !b
+    })
+  }
+
+  reset = () => {
+    this.setState({
+      session: 25,
+      break: 5,
+      running: false,
+      paused: false,
+      time: minutesToMs(25)
+    })
   }
 
   componentDidMount () {}
 
   render () {
-    const timeFormat = format(this.state.time)
-    const minutes = ('0' + timeFormat.m).slice(-2)
-    const seconds = ('0' + timeFormat.s).slice(-2)
     return (
       <div className='App'>
-        <SetTimer
-          time={this.state.session}
-          setTime={this.setSession}
-          label='session'
-        />
-        <SetTimer
-          time={this.state.break}
-          setTime={this.setBreak}
-          label='break'
-        />
         <Timer
           app={this.state}
           setSession={this.setSession}
           setBreak={this.setBreak}
           setRunning={this.setRunning}
+          reset={this.reset}
           updateTime={this.updateTime}
         />
+        <div className='settings'>
+          <SetTimer
+            time={this.state.session}
+            setTime={this.setSession}
+            label='session'
+          />
+          <SetTimer
+            time={this.state.break}
+            setTime={this.setBreak}
+            label='break'
+          />
+        </div>
       </div>
     )
   }

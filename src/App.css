@@ -1,28 +1,66 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --bg-color: #39364A;
+  --focus: #FF4E4D;
+  --break: #05EC8C;
+}
+
 .App {
+  height: 100vh;
   text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+  background: var(--bg-color);
   color: white;
+  font-family: 'Roboto Mono', monospace;
+ font-weight: 400;
 }
 
-.App-title {
-  font-size: 1.5em;
+.timer {
+  padding: 4em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.App-intro {
-  font-size: large;
+.settings {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+ .countdown {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 3px solid white;
+  width: 250px;
+  height: 250px;
 }
+
+h1 {
+  font-size: 4em;
+}
+
+.prompt {
+  height: 1rem;
+  position: relative;
+  top: -1rem;
+}
+
+.focus {
+  color: var(--focus);
+  border-color: var(--focus);
+ }
+
+.chill {
+  color: var(--break);
+  border-color: var(--break);
+ }
+

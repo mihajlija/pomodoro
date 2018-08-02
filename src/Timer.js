@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import format from './format.js'
+import { formatTime, minutesToMs } from './format.js'
 
 class Timer extends Component {
   constructor () {
@@ -17,9 +17,9 @@ class Timer extends Component {
     if (time === 0) {
       this.alarm()
       if (this.state.sessionFlag) {
-        this.props.updateTime(this.props.app.break * 60 * 1000)
+        this.props.updateTime(minutesToMs(this.props.app.break))
       } else {
-        this.props.updateTime(this.props.app.session * 60 * 1000)
+        this.props.updateTime(minutesToMs(this.props.app.session))
       }
       this.setState({
         sessionFlag: !this.state.sessionFlag
@@ -34,50 +34,65 @@ class Timer extends Component {
   }
 
   startTimer = () => {
-    this.props.setRunning(true)
-    this.setState({
-      pause: false
-    })
-    this.timer = setInterval(this.tickTock, 1000)
+    if (!this.props.app.running) {
+      this.props.setRunning(true)
+      this.timer = setInterval(this.tickTock, 1000)
+    }
   }
 
   stopTimer = () => {
-    this.props.setRunning(false)
-    this.setState({
-      pause: true
-    })
-    clearInterval(this.timer)
+    if (!this.props.app.paused && this.props.app.running) {
+      this.props.setRunning(false)
+      clearInterval(this.timer)
+    }
+  }
+
+  startStop = () => {
+    !this.props.app.running ? this.startTimer() : this.stopTimer()
   }
 
   resetTimer = () => {
     clearInterval(this.timer)
-    this.props.setRunning(false)
     this.beep.pause()
     this.beep.currentTime = 0
-    this.props.setSession(25)
-    this.props.setBreak(5)
-
-    this.setState({
-      pause: false
-    })
-    this.props.updateTime(25 * 60 * 1000)
+    this.props.reset()
   }
 
   render () {
-    const timeFormat = format(this.props.app.time)
+    const timeFormat = formatTime(this.props.app.time)
     const minutes = ('0' + timeFormat.m).slice(-2)
     const seconds = ('0' + timeFormat.s).slice(-2)
+    const focus = this.props.app.running && this.state.sessionFlag
+    const chill = this.props.app.running && !this.state.sessionFlag
+    const paused = !this.props.app.running && this.props.app.paused
+
     return (
-      <div>
-        <button onClick={this.startTimer}>Start</button>
-        <button onClick={this.stopTimer}>Stop</button>
-        <button onClick={this.resetTimer}>Reset</button>
-        <h1>{minutes} : {seconds}</h1>
-        <p>
-          {this.state.sessionFlag && this.props.app.running
-            ? 'work bitch'
-            : 'chill'}
-        </p>
+      <div className='timer'>
+        <div
+          className={
+            focus ? 'countdown focus' : chill ? 'countdown chill' : 'countdown'
+          }
+        >
+          <p class='prompt'>
+            {focus ? 'focus' : chill ? 'chill' : paused ? 'paused' : ''}
+          </p>
+          <h1>
+            {minutes}:{seconds}
+          </h1>
+          <div
+            className={
+              focus
+                ? 'play play-focus paused'
+                : chill
+                    ? 'play play-chill paused'
+                    : !this.props.app.running ? 'play' : 'play paused'
+            }
+            onClick={this.startStop}
+          />
+        </div>
+        <div>
+          <button onClick={this.resetTimer}>↺</button>
+        </div>
         <audio
           id='beep'
           preload='auto'
