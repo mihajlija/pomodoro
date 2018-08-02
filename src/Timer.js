@@ -73,7 +73,7 @@ class Timer extends Component {
             focus ? 'countdown focus' : chill ? 'countdown chill' : 'countdown'
           }
         >
-          <p class='prompt'>
+          <p className='prompt'>
             {focus ? 'focus' : chill ? 'chill' : paused ? 'paused' : ''}
           </p>
           <h1>

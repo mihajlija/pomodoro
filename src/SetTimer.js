@@ -19,7 +19,7 @@ class SetTimer extends Component {
 
   render () {
     return (
-      <div id='label'>
+      <div className='labels'>
         <p>{this.props.label}</p>
         <button onClick={this.increment}>+</button>
         <button onClick={this.decrement}>-</button>

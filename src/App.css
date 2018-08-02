@@ -10,26 +10,24 @@
   --break: #05EC8C;
 }
 
-.App {
-  height: 100vh;
-  text-align: center;
+body {
   background: var(--bg-color);
+}
+
+.App {
+  padding-top: 10vh;
+  height: 90vh;
+  text-align: center;
   color: white;
   font-family: 'Roboto Mono', monospace;
- font-weight: 400;
+  font-weight: 400;
 }
 
 .timer {
-  padding: 4em;
+  padding-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-}
-
-.settings {
-  display: flex;
-  width: 100%;
   justify-content: center;
 }
 
@@ -42,10 +40,12 @@
   border: 3px solid white;
   width: 250px;
   height: 250px;
+  margin-bottom: 1em;
 }
 
 h1 {
   font-size: 4em;
+  font-weight: 300;
 }
 
 .prompt {
@@ -63,4 +63,14 @@ h1 {
   color: var(--break);
   border-color: var(--break);
  }
+
+ .settings {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.labels {
+  padding: 5px;
+}
 
