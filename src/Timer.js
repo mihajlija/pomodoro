@@ -5,8 +5,7 @@ class Timer extends Component {
   constructor () {
     super()
     this.state = {
-      sessionFlag: true,
-      paused: false
+      sessionFlag: true
     }
     this.timer = 0
   }
@@ -15,10 +14,11 @@ class Timer extends Component {
     let time = this.props.app.time
 
     if (time === 0) {
-      this.alarm()
       if (this.state.sessionFlag) {
+        this.alarm('break')
         this.props.updateTime(minutesToMs(this.props.app.break))
       } else {
+        this.alarm('session')
         this.props.updateTime(minutesToMs(this.props.app.session))
       }
       this.setState({
@@ -29,8 +29,8 @@ class Timer extends Component {
     this.props.updateTime(time)
   }
 
-  alarm = () => {
-    this.beep.play()
+  alarm = what => {
+    what === 'session' ? this.beep1.play() : this.beep2.play()
   }
 
   startTimer = () => {
@@ -94,11 +94,19 @@ class Timer extends Component {
           <button onClick={this.resetTimer}>↺</button>
         </div>
         <audio
-          id='beep'
+          id='beep1'
           preload='auto'
-          src='https://goo.gl/65cBl1'
+          src='https://billwurtz.com/feels-great-to-be-doin-stuff.mp3'
           ref={audio => {
-            this.beep = audio
+            this.beep1 = audio
+          }}
+        />
+        <audio
+          id='beep2'
+          preload='auto'
+          src='https://billwurtz.com/just-try-to-have-a-good-time.mp3'
+          ref={audio => {
+            this.beep2 = audio
           }}
         />
       </div>
