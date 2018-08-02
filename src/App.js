@@ -4,8 +4,8 @@ import './App.css'
 import Timer from './Timer.js'
 import SetTimer from './SetTimer.js'
 import { minutesToMs } from './format.js'
-const sesh = 25
-const br = 5
+const sesh = 0.1
+const br = 0.2
 
 class App extends Component {
   constructor (props) {

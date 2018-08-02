@@ -15,10 +15,10 @@ class Timer extends Component {
 
     if (time === 0) {
       if (this.state.sessionFlag) {
-        this.alarm('break')
+        this.alarm(this.beep2)
         this.props.updateTime(minutesToMs(this.props.app.break))
       } else {
-        this.alarm('session')
+        this.alarm(this.beep1)
         this.props.updateTime(minutesToMs(this.props.app.session))
       }
       this.setState({
@@ -29,8 +29,15 @@ class Timer extends Component {
     this.props.updateTime(time)
   }
 
-  alarm = what => {
-    what === 'session' ? this.beep1.play() : this.beep2.play()
+  alarm = beep => {
+    beep.play()
+  }
+
+  pauseAlarm = () => {
+    this.beep1.pause()
+    this.beep1.currentTime = 0
+    this.beep2.pause()
+    this.beep2.currentTime = 0
   }
 
   startTimer = () => {
@@ -53,8 +60,7 @@ class Timer extends Component {
 
   resetTimer = () => {
     clearInterval(this.timer)
-    this.beep.pause()
-    this.beep.currentTime = 0
+    this.pauseAlarm()
     this.props.reset()
   }
 
