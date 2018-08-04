@@ -4,18 +4,16 @@ import './App.css'
 import Timer from './Timer.js'
 import SetTimer from './SetTimer.js'
 import { minutesToMs } from './format.js'
-const sesh = 0.1
-const br = 0.2
 
 class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      session: sesh,
-      break: br,
+      session: 25,
+      break: 5,
       running: false,
       paused: false,
-      time: minutesToMs(sesh)
+      time: minutesToMs(25)
     }
   }
 
