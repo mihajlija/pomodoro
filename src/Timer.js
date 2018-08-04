@@ -15,10 +15,10 @@ class Timer extends Component {
 
     if (time === 0) {
       if (this.state.sessionFlag) {
-        this.alarm(this.beep2)
+        this.alarm(this.chill)
         this.props.updateTime(minutesToMs(this.props.app.break))
       } else {
-        this.alarm(this.beep1)
+        this.alarm(this.focus)
         this.props.updateTime(minutesToMs(this.props.app.session))
       }
       this.setState({
@@ -33,11 +33,9 @@ class Timer extends Component {
     beep.play()
   }
 
-  pauseAlarm = () => {
-    this.beep1.pause()
-    this.beep1.currentTime = 0
-    this.beep2.pause()
-    this.beep2.currentTime = 0
+  pauseAlarm = beep => {
+    beep.pause()
+    beep.currentTime = 0
   }
 
   startTimer = () => {
@@ -61,7 +59,8 @@ class Timer extends Component {
   resetTimer = () => {
     clearInterval(this.timer)
     this.setState({ sessionFlag: true })
-    this.pauseAlarm()
+    this.pauseAlarm(this.chill)
+    this.pauseAlarm(this.focus)
     this.props.reset()
   }
 
@@ -101,19 +100,19 @@ class Timer extends Component {
           <button onClick={this.resetTimer}>↺</button>
         </div>
         <audio
-          id='beep1'
+          id='chill'
           preload='auto'
           src='https://billwurtz.com/feels-great-to-be-doin-stuff.mp3'
           ref={audio => {
-            this.beep1 = audio
+            this.chill = audio
           }}
         />
         <audio
-          id='beep2'
+          id='focus'
           preload='auto'
           src='https://billwurtz.com/just-try-to-have-a-good-time.mp3'
           ref={audio => {
-            this.beep2 = audio
+            this.focus = audio
           }}
         />
       </div>
