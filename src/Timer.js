@@ -16,15 +16,16 @@ class Timer extends Component {
     if (time === 0) {
       if (this.state.sessionFlag) {
         this.alarm(this.chill)
-        this.props.updateTime(minutesToMs(this.props.app.break))
+        this.props.updateTime(minutesToMs(this.props.app.break) + 1000)
       } else {
         this.alarm(this.focus)
-        this.props.updateTime(minutesToMs(this.props.app.session))
+        this.props.updateTime(minutesToMs(this.props.app.session) + 1000)
       }
       this.setState({
         sessionFlag: !this.state.sessionFlag
       })
     }
+
     time = this.props.app.time - 1000
     this.props.updateTime(time)
   }
