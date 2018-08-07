@@ -1,6 +1,6 @@
 # Pomodoro
 
-Pomodoro timer built with React.
+Pomodoro timer built with React. Cool sound effects by [Bill Wurtz](https://www.youtube.com/watch?v=xuCn8ux2gbs)
 
 https://mihajlija.github.io/pomodoro/
 
