@@ -4,7 +4,7 @@ node_js:
 install:
   - npm install
 script:
-  - npm run build
   - npm test
+  - npm run build
 after_success:
   - npm run lh -- $TRAVIS_BUILD_WEB_URL
