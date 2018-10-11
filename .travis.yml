@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - "7"
-before_install: cd project
+before_install: cd pomodoro
 install:
   - npm install
 script:
