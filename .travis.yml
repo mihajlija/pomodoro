@@ -1,10 +1,10 @@
 language: node_js
 node_js:
   - "7"
-before_install: cd pomodoro
 install:
   - npm install
 script:
+  - cd pomodoro
   - npm test
   - npm run build
 after_success:
