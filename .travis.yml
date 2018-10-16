@@ -4,7 +4,6 @@ node_js:
 install:
   - npm install
 script:
-  - cd pomodoro
   - npm test
   - npm run build
 after_success:
