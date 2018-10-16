@@ -5,8 +5,8 @@
   "homepage": "http://mihajlija.github.io/pomodoro",
   "bundlesize": [
     {
-      "path": "build/static/js/main.*.js",
-      "maxSize": "170 kB"
+      "path": "/static/js/main.*.js",
+      "maxSize": "250 kB"
     }
   ],
   "dependencies": {
