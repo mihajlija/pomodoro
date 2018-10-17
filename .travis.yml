@@ -4,4 +4,4 @@ node_js:
 install:
   - npm install
 after_success:
-  - npm run lh -- http://localhost:3000/
+  - npm run lh -- --perf=80  http://localhost:3000/
