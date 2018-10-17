@@ -5,7 +5,7 @@
   padding: 0;
 }
 :root {
-  --bg-color: #39364A;
+  --bg-color: rgb(66, 63, 82);
   --focus: #FF4E4D;
   --break: #05EC8C;
 }
