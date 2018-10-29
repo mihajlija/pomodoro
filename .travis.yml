@@ -3,5 +3,7 @@ node_js:
   - "7"
 install:
   - npm install
+script:
+  - npm run build
 after_success:
-  - npm run lh -- --perf=80  http://localhost:3000/
+  - npm run lh -- $TRAVIS_BUILD_WEB_URL

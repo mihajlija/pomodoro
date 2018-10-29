@@ -11,13 +11,14 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "bundlesize",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "lh": "lighthouse-ci"
   },
   "devDependencies": {
+    "bundlesize": "^0.17.0",
     "gh-pages": "^1.2.0",
     "lighthouse-ci": "git+https://github.com/ebidel/lighthouse-ci.git"
   }
